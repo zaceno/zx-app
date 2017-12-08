@@ -1,6 +1,6 @@
 {
   "name": "zx-app",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "simple, tiny web app framework",
   "main": "dist/zx-app.umd.js",
   "module": "src/index.js",
