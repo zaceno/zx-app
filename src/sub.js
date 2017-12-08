@@ -1,18 +1,16 @@
 import {h, patch} from 'picodom'
 import state from './state'
-export default fn => (...args) => {
-    const props = {}
-    props.oncreate = el => {
+export default fn => props => {
+    const x = {}
+    x.oncreate = el => {
         var node
-        el._zx = {}
-        el._zx.upd = _ => patch(node, (node = el._zx.bvf()), el)
-        el._zx.vfn = state(fn, el._zx.upd)
-        el._zx.bvf = _ => el._zx.vfn(...args)
+        const view = state($ => {
+            $.set(props)
+            el.$ = $
+            return fn($)
+        }, _ => patch(node, (node = view()), el))
     }
-    props.onupdate = el => {
-        el._zx.bvf = _ => el._zx.vfn(...args)
-        el._zx.upd()
-    }
-    if (args[0] && args[0].key) props.key = args[0].key
-    return h('x-', props)    
+    x.onupdate = el => el.$.set(props)
+    if (props && props.key) x.key = props.key
+    return h('x-', x)    
 }
